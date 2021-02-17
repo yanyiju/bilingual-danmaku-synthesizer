@@ -10,6 +10,7 @@
 ![效果动画 弹幕配备背景颜色](./Demo/demo_bkgd.gif)
 
 因为这个项目是受b站up主[洛飕飕](https://space.bilibili.com/2505015)的评论视频启发，这里暂时用其作品来demo展示。若up回复不许可，以下展示会删除。
+
 ![真实效果动画](./Demo/sousou_work.gif)
 ![真实效果动画 弹幕配备背景颜色](./Demo/sousou_work_bkgd.gif)
 

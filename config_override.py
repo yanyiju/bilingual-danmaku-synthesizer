@@ -3,8 +3,8 @@
 configs = {
     'input': {
         # Replace with your video path in the following.
-        'video_path': 'sousou.mp4',
-        'file_path': 'InputFiles_example/'
+        'video_path': 'your_video.mp4',
+        'file_path': 'your_input_folder/'
     },
     'danmaku': {
 		# Add your customized danmaku style changes here.
