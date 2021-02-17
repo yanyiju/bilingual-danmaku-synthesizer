@@ -9,10 +9,10 @@
 ![效果动画](./Demo/demo.gif)
 ![效果动画 弹幕配备背景颜色](./Demo/demo_bkgd.gif)
 
-因为这个项目是受b站up主[洛飕飕](https://space.bilibili.com/2505015)的评论视频启发，这里暂时用其作品来demo展示。若up回复不许可，以下展示会删除。
+因为这个项目是受b站up主[洛飕飕](https://space.bilibili.com/2505015)的评论视频启发，这里暂时用其作品来demo展示。(up尚未回复许可，以下展示暂时被删除。)
 
-![真实效果动画](./Demo/sousou_work.gif)
-![真实效果动画 弹幕配备背景颜色](./Demo/sousou_work_bkgd.gif)
+<!-- ![真实效果动画](./Demo/sousou_work.gif) -->
+<!-- ![真实效果动画 弹幕配备背景颜色](./Demo/sousou_work_bkgd.gif) -->
 
 ## 安装依赖
 脚本语言使用python3，并基于moviepy开发。moviepy库则会使用FFmpeg这一最常用的视频处理开源软件。在执行脚本前，请先依据官方文档安装[moviepy](https://zulko.github.io/moviepy/install.html)。初次使用moviepy时，FFmpeg会自动通过镜像安装，所以用户**无需自行安装**[FFmpeg](https://ffmpeg.org/download.html)。
