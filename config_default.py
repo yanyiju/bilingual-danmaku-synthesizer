@@ -3,7 +3,9 @@
 configs = {
     'input': {
         'video_path': None,
-        'file_path': 'InputFiles/'
+        'audio_path': None,
+        'file_path': 'InputFiles/',
+        'video_duration': None
     },
     'danmaku': {
         'fonts': {
@@ -18,7 +20,8 @@ configs = {
         'fps': 60,
         'background_rgb': [0, 0, 0],
         'background_opacity': 0.5,
-        'coverage': 1
+        'coverage': 1,
+        'time_range_to_appear': None
     },
     'output': {
         'codec': 'libx264',

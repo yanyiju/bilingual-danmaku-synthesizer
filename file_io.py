@@ -15,12 +15,16 @@ def read_files_and_video(configs):
 	comm_files, tran_files = dict(), dict()
 	file_path = input_configs[FILE_PATH]
 	video_path = input_configs[VIDEO_PATH]
-	if video_path is None:
-		Derror("No video is assigned. Please assign video_path in the input configs.")
+	audio_path = input_configs[AUDIO_PATH]
+	duration = input_configs[VIDEO_DURATION]
 	for root, dirs, files in os.walk(file_path):
 		for filename in files:
 			Dprint("%s is detected and ready to process." % filename)
-			[file_type, lang] = filename.split('.')[0].split('_')
+			split_parts = filename.split('.')[0].split('_')
+			if len(split_parts) != 2:
+				Dwarn("%s doesn't conform to naming conventions. Please check." %filename)
+				continue
+			[file_type, lang] = split_parts
 			if not lang in languages:
 				Dwarn("%s is not supported now, thus ignored." % lang)
 			file = open(os.path.join(file_path, filename), 'r')
@@ -29,7 +33,7 @@ def read_files_and_video(configs):
 			elif file_type == translation_file_type:
 				tran_files[lang] = file
 			else:
-				Dwarn("%s can not identified, thus ignored." % filename)
+				Dwarn("Type of %s can not be identified, thus ignored." % filename)
 	danmakus = []
 	for lang in comm_files.keys():
 		comments = comm_files[lang].readlines()
@@ -44,26 +48,44 @@ def read_files_and_video(configs):
 			comm = comments[i].strip('\n')
 			tran = translation[i].strip('\n') if i < len(translation) else ""
 			danmakus.append(Danmaku(comm, tran, lang))
+		comm_files[lang].close()
+		if lang in tran_files.keys():
+			tran_files[lang].close()
 	Dprint("All comments and translation have been retrieved.")
-	video = VideoFileClip(video_path)
-	return danmakus, video
+	try:
+		if video_path is default_value:
+			Derror("No video is assigned. Please assign video_path in the input configs.")
+		video = VideoFileClip(video_path)
+		if not duration is default_value:
+			video = video.subclip(duration[0], duration[1])
+		audio = AudioFileClip(audio_path) if not audio_path is default_value else default_value
+	except:
+		Derror("Error happens when loading input video and audio setting.")
+	return danmakus, video, audio
 
 
 def export_final_video(video, configs):
-	"""Export the final video with danmaku."""
-	# apply_patch() # no much different
+	"""Export the final video with danmaku. (recommended)"""
+	# apply_patch() # @yanyiju I feel no much difference
 	output_configs = configs[OUTPUT]
-	video.write_videofile(	output_configs[VIDEO_NAME],
-							audio_codec='aac', 
-							threads=output_configs[THREADS],
-							codec=output_configs[CODEC],
-							bitrate=output_configs[BITRATE])
+	Dprint("Moviepy will start to export final video. Please wait...")
+	video.write_videofile(
+		output_configs[VIDEO_NAME], 
+		audio_codec='aac', 
+		threads=output_configs[THREADS], 
+		codec=output_configs[CODEC], 
+		bitrate=output_configs[BITRATE]
+	)
+	Dprint("Congratulations! Final video exported!")
 
 
 def export_final_video_ffmpeg(danmaku_videos, configs):
 	"""Export the final video mainly with ffmpeg."""
+	Dprint("Moviepy will start to export all danmaku textclips. Please wait...")
 	timestamps = export_danmaku_videos(danmaku_videos)
+	Dprint("All danmaku videos are exported. Ready for FFmpeg packaging stage.")
 	insert_danmaku_videos(timestamps, configs)
+	Dprint("Congratulations! Final video exported!")
 
 
 def export_danmaku_videos(danmaku_videos):
@@ -71,8 +93,6 @@ def export_danmaku_videos(danmaku_videos):
 	if os.path.exists(danmaku_videos_output):
 		shutil.rmtree(danmaku_videos_output)
 	os.makedirs(danmaku_videos_output)
-
-	Dprint("Moviepy will start to export all danmaku textclips. Please wait...")
 
 	danmaku_video_id, danmaku_video_timestamps, progress = 0, {}, 0
 	for (v, t) in danmaku_videos:
@@ -99,8 +119,7 @@ def export_danmaku_videos(danmaku_videos):
 
 		progress += 1
 		Dprint("Danmaku video completion progress: %d/%d" %(progress, len(danmaku_videos)))
-
-	Dprint("All danmaku videos are exported. Ready for FFmpeg stage.")
+	
 	# Save the timestamps in case of user needs
 	with open("danmaku_video_timestamps.json", 'w') as f:
 		json.dump(danmaku_video_timestamps, f)
@@ -110,6 +129,7 @@ def export_danmaku_videos(danmaku_videos):
 def insert_danmaku_videos(timestamps, configs):
 	"""Insert danmaku videos over the target video using FFmpeg."""
 	input_video_path = configs[INPUT][VIDEO_PATH]
+	audio_path = configs[INPUT][AUDIO_PATH]
 	output_path = configs[OUTPUT][VIDEO_NAME]
 	bitrate = configs[OUTPUT][BITRATE]
 	codec = configs[OUTPUT][CODEC]
@@ -123,15 +143,16 @@ def insert_danmaku_videos(timestamps, configs):
 	Dprint("Video stream reframed and saved.")
 
 	# Save audio file
-	audio_path = os.path.join(danmaku_videos_output, "base.wav")
-	subprocess.call("ffmpeg -i {v} {a}".format(v=video_path, a=audio_path), shell=True)
-	Dprint("Audio stream is saved.")
+	if audio_path is None:
+		audio_path = os.path.join(danmaku_videos_output, "base.wav")
+		subprocess.call("ffmpeg -i {v} {a}".format(v=video_path, a=audio_path), shell=True)
+		Dprint("Audio stream is saved.")
 
 	## Example of ffmpeg command used here:
 	## 	ffmpeg -i a.mp4 -i b.mp4 -filter_complex '[1:v]setpts=PTS-STARTPTS+2/TB[v1];
 	## 	[0:v][v1]overlay=eof_action=pass[v2]' -b:v 5M -vcodec h264_videotoolbox -map '[v2]' out.mp4
 
-	# Generate ffmpeg command
+	# Generate ffmpeg overlay command
 	input_streams, input_cmd = [], ["-i " + video_path]
 	for (dir_path, dir_names, file_names) in os.walk(danmaku_videos_output):
 		for file_name in file_names:
@@ -144,7 +165,7 @@ def insert_danmaku_videos(timestamps, configs):
 		file_name = input_streams[i - 1]
 		# Redefine stream starting time
 		filter_cond.append("[{id}:v]setpts=PTS-STARTPTS+{t}/TB[{id}d]".format(id=i, t=timestamps[file_name]))
-		# Perform the overlay
+		# Define overlay
 		output_stream = "v" + str(i)
 		filter_cond.append("[{b}][{id}d]overlay=eof_action=pass[{out}]".format(b=base, id=i, out=output_stream))
 		base = output_stream
@@ -157,12 +178,11 @@ def insert_danmaku_videos(timestamps, configs):
 	if os.path.exists(output_path):
 		os.remove(output_path)
 
-	# Run ffmpeg command
+	# Run ffmpeg command to perform the overlay
 	subprocess.call(command, shell=True)
 
 	# Combine the final video with audio
-	Dprint("Video stream is ready and ready to package audio.")
+	Dprint("Video stream is ready and audio will be packaged.")
 	subprocess.call("ffmpeg -i {v} -i {a} -b:v {b} -vcodec {c} {o}"\
 		.format(v=temp_path, a=audio_path, b=bitrate, c=codec, o=output_path), shell=True)
-	Dprint("Congratulations! Final video exported!")
 

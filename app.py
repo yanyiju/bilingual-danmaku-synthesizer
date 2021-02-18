@@ -6,10 +6,10 @@ from danmaku_system import *
 configs = get_configs()
 
 # Load input files and background video
-danmaku, video = read_files_and_video(configs)
+danmaku, video, audio = read_files_and_video(configs)
 
 # Prepare danmaku overlaying
-danmakuSystem = DanmakuSystem(video, configs)
+danmakuSystem = DanmakuSystem(video, audio, configs)
 
 # Method 1: Write out the final video with moviepy (recommended)
 video = danmakuSystem.get_video_with_danmaku(danmaku)

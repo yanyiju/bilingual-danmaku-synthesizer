@@ -37,4 +37,5 @@ def Dwarn(message):
 def Derror(message):
 	"""Specific error func for this tool."""
 	print(f"{colors.FAIL}[Danmaku error]{colors.ENDC} - {message}")
+	raise Exception(message)
 	

@@ -1,13 +1,16 @@
 languages = ["eng", "jp"]
 comments_file_type = "comments"
 translation_file_type = "translation"
+default_value = None
 
 # Config property names
 INPUT = "input"
 DANMAKU = "danmaku"
 OUTPUT = "output"
 VIDEO_PATH = "video_path"
+AUDIO_PATH = "audio_path"
 FILE_PATH = "file_path"
+VIDEO_DURATION = "video_duration"
 FONTS = "fonts"
 FONTSIZE = "fontsize"
 COMMENT_COLOR = "comment_color"
@@ -17,6 +20,7 @@ FPS = "fps"
 BACKGROUND_RGB = "background_rgb"
 BACKGROUND_OPACITY = "background_opacity"
 COVERAGE = "coverage"
+TIME_RANGE = "time_range_to_appear"
 CODEC = "codec"
 BITRATE = "bitrate"
 THREADS = "threads"
