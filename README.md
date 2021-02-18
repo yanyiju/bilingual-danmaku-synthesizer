@@ -1,7 +1,7 @@
 中文 | [English](README_EN.md)
 
-# 私人订制双语弹幕合成器
-本工具适用于想要模拟弹幕效果的评论视频制作，基于用户输入外语评论及对应中文翻译自动合成双语弹幕并随机叠加于原视频之上。
+# 私人订制双语弹幕合成工具
+私人订制双语弹幕合成工具（Bilingual Danmaku Synthesizer Tool, 缩写BDST）适用于想要模拟弹幕效果的评论视频制作，基于用户输入外语评论及对应中文翻译自动合成双语弹幕并随机叠加于原视频之上。
 
 ## 效果演示
 用户可以通过改动配制文件中的参数来定制弹幕风格，包括弹幕存活时间、弹幕文字颜色、弹幕字体、弹幕字体大小、弹幕显示区域、弹幕背景颜色等等。演示效果的视频文件及动图在[这里](./Demo)。
@@ -9,18 +9,32 @@
 ![效果动画](./Demo/demo.gif)
 ![效果动画 弹幕配备背景颜色](./Demo/demo_bkgd.gif)
 
-因为这个项目是受b站up主[洛飕飕](https://space.bilibili.com/2505015)的评论视频启发，这里暂时用其作品来demo展示。(up尚未回复许可，以下展示暂时被删除。)
+因为这个项目是受[洛飕飕@bilibili](https://space.bilibili.com/2505015)的评论视频启发，这里暂时借用其作品来demo展示。(原作者本人尚未回复许可，以下演示暂时不予展示。)
 
 <!-- ![真实效果动画](./Demo/sousou_work.gif) -->
 <!-- ![真实效果动画 弹幕配备背景颜色](./Demo/sousou_work_bkgd.gif) -->
 
 ## 安装依赖
-脚本语言使用python3，并基于moviepy开发。moviepy库则会使用FFmpeg这一最常用的视频处理开源软件。在执行脚本前，请先依据官方文档安装[moviepy](https://zulko.github.io/moviepy/install.html)。初次使用moviepy时，FFmpeg会自动通过镜像安装，所以用户**无需自行安装**[FFmpeg](https://ffmpeg.org/download.html)。
+脚本语言使用python3，并基于标准库和MoviePy开发。本工具的依赖树：
+```
+BDST
+└── MoviePy (required)
+    ├── FFmpeg (required)
+    ├── ImageMagick (required)
+    └── Pygame (optional)
+```
 
-通常使用pip平台安装moviepy：
+MoviePy库会使用FFmpeg这一最常用的视频处理开源软件。在执行脚本前，请先依据官方文档安装[MoviePy](https://zulko.github.io/moviepy/install.html)。初次使用MoviePy时，FFmpeg会自动通过镜像安装，所以用户**无需自行安装**[FFmpeg](https://ffmpeg.org/download.html)。通常使用pip平台安装MoviePy即可：
 ```
 pip install moviepy
 ```
+
+此外，因为本工具涉及文字层的使用，[ImageMagick](https://www.imagemagick.org/script/download.php)其作为MoviePy目前在文字处理方面依赖也必须安装（[详情](https://zulko.github.io/moviepy/install.html#other-optional-but-useful-dependencies)）。对于Mac用户，通常使用Homebrew安装预编译版ImageMagick：
+```
+brew install imagemagick
+```
+
+对于本工具，[Pygame](https://www.pygame.org/wiki/GettingStarted)可以选择暂不安装。
 
 ## 使用流程
 ### 准备工作
@@ -35,7 +49,7 @@ pip install moviepy
 因目前评论语言仅支持英语与日语，所以用户至多有四个文件。请将所有文件置于```InputFiles/```文件夹或某一特定文件夹内。
 
 ### 设定配置文件
-用户可以修改```config_override.py```来覆盖存放于```config_default.py```中的默认参数配置。配置文件中包含三大部分，分别为输入、弹幕和输出。
+用户可以修改[```config_override.py```](config_override.py)来覆盖存放于[```config_default.py```](config_default.py)中的默认参数配置。配置文件中包含三大部分，分别为输入、弹幕和输出。
 
 #### 关于输入
 该部分参数位于关键字***input***下，主要关于目标视频路径以及TXT输入文件路径。
@@ -54,9 +68,9 @@ pip install moviepy
 | translation_color | 翻译字体颜色 | 默认颜色为白色，值为```'white'```。使用moviepy内```TextClip.list('color')```可以罗列所有颜色选项。|
 | duration | 弹幕存活时间 | 默认存活时间为10秒。|
 | fps | 弹幕运动帧数 | 默认使用60帧。最终视频导出帧数取决于合成中帧率最高的部分。一般正常视频不超过60帧。 |
-| background_rgb | 弹幕背景颜色 | 默认弹幕背景为黑色。支持RGB格式。|
+| background_rgb | 弹幕背景颜色 | 默认弹幕背景为黑色。支持RGB格式，例如[255, 0, 0]是红色。|
 | background_opacity | 弹幕背景透明度 | 默认值为0，即弹幕背景不会开启。可替换为任一位于[0, 1]的数。使用moviepy导出有效，使用FFmpeg直接导出则可能失效。|
-| coverage | 弹幕显示区域 | 默认值为1，可替换为任一位于(0, 1]的数。 |
+| coverage | 弹幕显示区域 | 默认值为1，可替换为任一位于(0, 1]的数。|
 
 #### 关于输出
 该部分参数位于关键字***output***下，主要关于视频的导出选项。
@@ -88,7 +102,7 @@ moviepy的导出效率完全取决于FFmpeg的导出效率，而不巧的是movi
 danmaku_videos = danmakuSystem.get_danmaku_videos_with_mask(danmaku)
 export_final_video_ffmpeg(danmaku_videos, configs)
 ```
-即注释掉第一个方法并取消注释第二个方法。第二个方法可以实现使用FFmpeg的硬件加速目的，但这并不能保证导出时间的缩短，原因是```danmaku_videos```是一系列包含透明通道的弹幕运动mov类型文件，这一部分目前还是只能由moviepy导出，速度较慢。```export_final_video_ffmpeg```会将之前导出的mov文件和目标视频打包，这一过程则可以使用硬件加速。
+即注释掉第一个方法并取消注释第二个方法。第二个方法可以实现使用FFmpeg的硬件加速目的，但这并不能保证导出时间的缩短，原因是```danmaku_videos```是一系列包含透明通道和弹幕运动的文字剪辑，这一部分目前还是只能由moviepy导出，速度较慢。```export_final_video_ffmpeg```会先将之前的文字剪辑导出成mov文件，然后和目标视频打包，这一过程则可以使用硬件加速。
 
 **注意！** 
 如果您选择使用如上办法，请选择适当的视频编码格式，FFmpeg提供的硬件加速编码在[这里](https://trac.ffmpeg.org/wiki/HWAccelIntro)，例如：对于Mac用户，您可以选择```h264_videotoolbox```；对于NVIDIA硬件用户，您可以选择```h264_nvenc```。**如果您没有在配置文件中修改视频编码，则硬件加速不会执行。**
