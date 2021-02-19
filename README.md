@@ -6,12 +6,12 @@
 ## 效果演示
 用户可以通过改动配制文件中的参数来定制弹幕风格，包括弹幕存活时间、弹幕文字颜色、弹幕字体、弹幕字体大小、弹幕显示区域、弹幕背景颜色等等。演示效果的视频文件及动图在[这里](./Demo)。
 
-![效果动画](./Demo/demo.gif)
+![效果动画](./Demo/demo.gif)<br>
 ![效果动画 弹幕配备背景颜色](./Demo/demo_bkgd.gif)
 
 因为这个项目是受[洛飕飕@bilibili](https://space.bilibili.com/2505015)的评论视频启发，这里暂时借用其作品来demo展示。(原作者本人已许可)
 
-![真实效果动画](./Demo/sousou_work.gif)
+![真实效果动画](./Demo/sousou_work.gif)<br>
 ![真实效果动画 弹幕配备背景颜色](./Demo/sousou_work_bkgd.gif)
 
 ## 安装依赖
@@ -24,17 +24,48 @@ BDST
     └── Pygame (optional)
 ```
 
-MoviePy库会使用FFmpeg这一最常用的视频处理开源软件。在执行脚本前，请先依据官方文档安装[MoviePy](https://zulko.github.io/moviepy/install.html)。初次使用MoviePy时，FFmpeg会自动通过镜像安装，所以用户**无需自行安装**[FFmpeg](https://ffmpeg.org/download.html)。通常使用pip平台安装MoviePy即可：
-```
-pip install moviepy
-```
+[MoviePy](https://zulko.github.io/moviepy/install.html)使用[FFmpeg](https://ffmpeg.org/download.html)这一最常用的视频处理开源软件。初次使用MoviePy时，FFmpeg会自动通过镜像安装，所以用户**无需自行安装FFmpeg**。此外，因为本工具涉及文字层的使用，[ImageMagick](https://www.imagemagick.org/script/download.php)其作为MoviePy目前在文字处理方面依赖也必须安装（[详情](https://zulko.github.io/moviepy/install.html#other-optional-but-useful-dependencies)）。对于本工具，[Pygame](https://www.pygame.org/wiki/GettingStarted)可以选择暂不安装。
 
-此外，因为本工具涉及文字层的使用，[ImageMagick](https://www.imagemagick.org/script/download.php)其作为MoviePy目前在文字处理方面依赖也必须安装（[详情](https://zulko.github.io/moviepy/install.html#other-optional-but-useful-dependencies)）。对于Mac用户，通常使用Homebrew安装预编译版ImageMagick：
-```
-brew install imagemagick
-```
+### Mac OS
+以下步骤针对从未在Mac上运行过Python的用户，仅供参考。
 
-对于本工具，[Pygame](https://www.pygame.org/wiki/GettingStarted)可以选择暂不安装。
+1. 在Mac上安装Python3：
+    * 方法一：官网下载[Python3.9安装程序](https://www.python.org/downloads/)，运行后即可。
+    * 方法二：如果已经安装Homebrew，打开终端输入命令```brew install python3```后即安装成功。
+    * 方法三：安装[Anaconda](https://www.anaconda.com/products/individual#Downloads)。
+2. 检查Python和pip安装情况：
+    * 在终端内分别输入```python --version```和```pip --version```，显示版本号即可进行下一步。
+3. 使用pip平台安装MoviePy，在终端中输入：
+    ```
+    pip install moviepy
+    ```
+4. 使用Homebrew安装预编译版ImageMagick，在终端中输入：
+    ```
+    brew install imagemagick
+    ```
+    或者[官网](https://www.imagemagick.org/script/download.php)下载压缩包后解压安装。
+
+### Windows
+以下步骤针对从未在Windows电脑上运行过Python的用户，仅供参考。
+
+1. 在Windows上安装Python3：
+    * 官网下载[Python3.9安装程序](https://www.python.org/downloads/)，运行安装包后在Setup窗口下方勾选```Add Python 3.9 to PATH```后选择```Install Now```。
+2. 检查Python和pip安装情况：
+    * 使用快捷键```Win + R```打开左下角窗口输入```cmd```打开终端分别输入```python --version```和```pip --version```，显示版本号即可进行下一步。
+3. 安装ImageMagick：
+    * 从[官网](https://www.imagemagick.org/script/download.php)下载Windows安装程序，运行即可。
+    * ImageMagick会安装在```C:\Program Files\ImageMagick-[版本号]```路径下，该路径在之后会用到。
+4. 安装MoviePy，在终端中输入：
+    ```
+    pip install moviepy
+    ```
+5. 在MoviePy中配置ImageMagick环境变量：
+    * 打开MoviePy安装目录下的```config_defaults.py```，该文件位于```C:\Users\[你的用户名]\AppData\Local\Programs\Python39\Lib\site-packages\moviepy```路径下。
+    * 在该文件最后一行关于```IMAGEMAGICK_BINARY```的配置修改成如下：
+        ```
+        IMAGEMAGICK_BINARY = r"C:\\Program Files\\ImageMagick-[版本号]\\magick.exe"
+        ```
+6. ImageMagick在Windows系统中不能自动识别新添加的字体，所以建议Windows用户使用本工具时准备好字体文件(.ttf, .otf, etc.)。此外，字体文件的名字和路径中也最好不出现除英语外的```utf-8```类字符。
 
 ## 使用流程
 ### 准备工作
@@ -64,10 +95,10 @@ brew install imagemagick
 该部分参数位于关键字***danmaku***下，主要关于弹幕的外观设计。
 | 参数 | 用途 | 备注 |
 | :----- | :----: | :----: |
-| fonts | 各语言的字体文件路径 | 预设字体存放于```Fonts/```路径下，<br>用户可以视需求添加字体然后修改此参数。<br>若是已经安装在操作系统内的字体，<br>则可以直接填写字体名称取代路径。<br>使用moviepy内```TextClip.list('font')```<br>可以罗列操作系统内字体。|
+| fonts | 各语言的字体名或字体文件路径 | 预设字体存放于```Fonts/```路径下，<br>用户可以视需求添加字体然后修改此参数。<br>若是已经安装在操作系统内的字体，<br>则可以直接填写字体名称取代路径。<br>使用moviepy内```TextClip.list('font')```<br>可以罗列操作系统内字体。<br>***保险起见，Windows用户请使用字体文件路径，<br>且文件名和路径中只包含英语字符。***|
 | fontsize | 评论及翻译字体大小 | 默认大小为30像素。|
-| comment_color | 评论字体颜色 | 默认颜色为白色，值为```'white'```。使用MoviePy内```TextClip.list('color')```<br>可以罗列所有颜色选项。|
-| translation_color | 翻译字体颜色 | 默认颜色为白色，值为```'white'```。使用MoviePy内```TextClip.list('color')```<br>可以罗列所有颜色选项。|
+| comment_color | 评论字体颜色 | 默认颜色为白色，值为```'white'```。<br>使用MoviePy内```TextClip.list('color')```<br>可以罗列所有颜色选项。|
+| translation_color | 翻译字体颜色 | 默认颜色为白色，值为```'white'```。<br>使用MoviePy内```TextClip.list('color')```<br>可以罗列所有颜色选项。|
 | duration | 弹幕存活时间 | 默认存活时间为10秒。|
 | fps | 弹幕运动帧数 | 默认使用60帧。<br>最终视频帧数取决于合成中帧率最高的部分。<br>一般正常视频不超过60帧。 |
 | background_rgb | 弹幕背景颜色 | 默认弹幕背景为黑色。<br>支持RGB格式，例如[255, 0, 0]是红色。|
@@ -81,7 +112,7 @@ brew install imagemagick
 | :----- | :----: | :----: |
 | codec | 视频编码方式 | 默认```'libx264'```，其他包括```'mpeg4'```、```'rawvideo'```等。<br>详情请参照MoviePy官方文档关于[视频导出](https://zulko.github.io/moviepy/ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.ImageClip.write_videofile)的部分。|
 | bitrate | 视频比特率 | 默认比特率为10000k。|
-| threads | 导出时使用线程数 | 默认线程数为8。<br>此参数受限于用户电脑CPU配置能提供的线程数。<br>线程数越高，导出渲染速度越快。<br>MoviePy源代码仅支持使用CPU，若想使用GPU加速，请参照[备注](#关于使用GPU加速moviepy导出视频)以及FFmpeg的[硬件加速教程](https://trac.ffmpeg.org/wiki/HWAccelIntro)。|
+| threads | 导出时使用线程数 | 默认线程数为8。<br>此参数受限于用户电脑CPU配置能提供的线程数。<br>线程数越高，导出渲染速度越快。<br>MoviePy源代码仅支持使用CPU，<br>若想使用GPU加速，请参照[备注](#关于使用GPU加速moviepy导出视频)以及FFmpeg的[硬件加速教程](https://trac.ffmpeg.org/wiki/HWAccelIntro)。|
 | video_name | 导出视频文件名字 | 默认文件名为```'video_danmaku.mp4'```，<br>导出位置位于本工具文件夹内。<br>用户如修改编码参数，请相应在此参数中修改文件扩展名。|
 
 ### 导出包含弹幕的视频
