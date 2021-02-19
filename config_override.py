@@ -13,7 +13,7 @@ configs = {
     'danmaku': {
         # Add your customized danmaku style changes here.
         # You can change the following features,
-        # 	fonts: fonts of English/Japanese/Chinese (英语/日语/中文字体)
+        # 	fonts: fonts of English/Japanese/Chinese (英语/日语/中文字体。对Windows用户:建议使用只包含英文字母的路径)
         # 	fontsize: size of the danmaku font (弹幕字体大小)
         # 	comment_color: color of the comments (弹幕评论部分颜色)
         # 	translation_color: color of the translation (弹幕中文翻译部分颜色)

@@ -10,8 +10,8 @@ configs = {
     'danmaku': {
         'fonts': {
             'eng': 'TimesNewRoman',
-            'jp': 'Fonts/日本語/ヒラギノ明朝 Pro W6.otf',
-            'cn': 'Fonts/中文/思源宋体/SourceHanSerif-Heavy.ttc'
+            'jp': 'Fonts/Japanese/Hiragino_Mincho_Pro_W6.otf',
+            'cn': 'Fonts/Chinese/SourceHanSerif/SourceHanSerif-Heavy.ttc'
         },
         'fontsize': 30,
         'comment_color': 'white',

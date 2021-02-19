@@ -27,7 +27,7 @@ def read_files_and_video(configs):
 			[file_type, lang] = split_parts
 			if not lang in languages:
 				Dwarn("%s is not supported now, thus ignored." % lang)
-			file = open(os.path.join(file_path, filename), 'r')
+			file = open(os.path.join(file_path, filename), 'r', encoding='utf-8')
 			if file_type == comments_file_type:
 				comm_files[lang] = file
 			elif file_type == translation_file_type:
