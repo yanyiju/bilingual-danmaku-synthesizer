@@ -100,7 +100,7 @@ BDST
 | comment_color | 评论字体颜色 | 默认颜色为白色，值为```'white'```。<br>使用MoviePy内```TextClip.list('color')```<br>可以罗列所有颜色选项。|
 | translation_color | 翻译字体颜色 | 默认颜色为白色，值为```'white'```。<br>使用MoviePy内```TextClip.list('color')```<br>可以罗列所有颜色选项。|
 | duration | 弹幕存活时间 | 默认存活时间为10秒。|
-| fps | 弹幕运动帧数 | 默认使用60帧。<br>最终视频帧数取决于合成中帧率最高的部分。<br>一般正常视频不超过60帧。 |
+| fps | 弹幕运动帧率 | 默认使用60帧。<br>最终视频帧数取决于合成中帧率最高的部分。<br>一般正常视频不超过60帧。 |
 | background_rgb | 弹幕背景颜色 | 默认弹幕背景为黑色。<br>支持RGB格式，例如[255, 0, 0]是红色。|
 | background_opacity | 弹幕背景透明度 | 默认值为0，即弹幕背景不会开启。<br>可替换为任一位于[0, 1]的数。<br>仅限使用MoviePy导出时有效。|
 | coverage | 弹幕显示区域 | 默认值为1，可替换为任一位于(0, 1]的数。|
