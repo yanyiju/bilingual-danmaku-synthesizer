@@ -2,6 +2,7 @@ languages = ["eng", "jp"]
 comments_file_type = "comments"
 translation_file_type = "translation"
 default_value = None
+default_value_str = "None"
 
 # Config property names
 INPUT = "input"
@@ -29,3 +30,7 @@ VIDEO_NAME = "video_name"
 # Static file pathes
 transparent_pic = "Resource/transparent_pic.png"
 danmaku_videos_output = "Danmaku_videos/"
+
+# GUI related
+CONFIG_GUI_PATH = "config_gui.json"
+GUI_THEME_COLOR = "#ECECEC"

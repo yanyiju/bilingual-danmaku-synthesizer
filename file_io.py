@@ -53,14 +53,17 @@ def read_files_and_video(configs):
 			tran_files[lang].close()
 	Dprint("All comments and translation have been retrieved.")
 	try:
-		if video_path is default_value:
+		if video_path == default_value or video_path == default_value_str:
 			Derror("No video is assigned. Please assign video_path in the input configs.")
 		video = VideoFileClip(video_path)
-		if not duration is default_value:
+		if duration != default_value:
 			video = video.subclip(duration[0], duration[1])
-		audio = AudioFileClip(audio_path) if not audio_path is default_value else default_value
-	except:
-		Derror("Error happens when loading input video and audio setting.")
+		if audio_path == default_value or audio_path == default_value_str:
+			audio = default_value
+		else:
+			audio = AudioFileClip(audio_path)
+	except Exception as e:
+		Derror("Error happens when loading input video and audio setting: " + str(e))
 	return danmakus, video, audio
 
 
