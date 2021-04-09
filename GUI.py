@@ -3,6 +3,7 @@
 import sys
 import json
 import subprocess
+import webbrowser
 import tkinter as tk
 from tkinter import StringVar, IntVar, DoubleVar, LEFT, RIGHT, BOTH, Toplevel
 from tkinter.ttk import *
@@ -98,7 +99,7 @@ class ConfigGUI():
     def add_action_buttons(self):
         """Add several action buttons outside the notebook."""
         # Help and Reset button
-        Button(self.root, text="Help", command=self.start_synthesization)\
+        Button(self.root, text="Help", command=self.help_support)\
             .pack(side=LEFT, fill=BOTH, padx=self.btn_padx, pady=self.btm_pady)
         Button(self.root, text="Reset", command=self.reset_vars)\
             .pack(side=LEFT, fill=BOTH, padx=self.btn_padx, pady=self.btm_pady)
@@ -106,6 +107,36 @@ class ConfigGUI():
         # Start button
         Button(self.root, text="Start Synthesization", command=self.start_synthesization)\
             .pack(side=RIGHT, fill=BOTH, padx=self.btn_padx, pady=self.btm_pady)
+
+
+    def help_support(self):
+        """Function of providing window of help and support."""
+        helpWindow = tk.Toplevel(self.root)
+        helpWindow.title("Help and Support")
+        helpWindow.configure(bg=GUI_THEME_COLOR)
+        helpLinks = Frame(helpWindow)
+        helpLinks.pack(padx=10)
+
+        # padding of the hyperlinks
+        link_padx = 15
+        link_pady = 10
+
+        Label(helpLinks, text="Source Page: ", width=self.lab_w).grid(row=0, column=0, pady=link_pady)
+        sourceLink = tk.Label(helpLinks, text="Github Page", fg="blue", cursor="hand2")
+        sourceLink.grid(row=0, column=1, padx=link_padx, pady=link_pady)
+        sourceLink.bind("<Button-1>", lambda e: self.callback("https://github.com/yanyiju/bilingual-danmaku-synthesizer"))
+
+        Label(helpLinks, text="README Guide: ", width=self.lab_w).grid(row=1, column=0, pady=link_pady)
+        readmeLink = tk.Label(helpLinks, text="README(中文)", fg="blue", cursor="hand2")
+        readmeLink.grid(row=1, column=1, padx=link_padx, pady=link_pady)
+        readmeLink.bind("<Button-1>", lambda e: self.callback("https://github.com/yanyiju/bilingual-danmaku-synthesizer/blob/main/README.md"))
+
+        Label(helpLinks, text="Report Issue: ", width=self.lab_w).grid(row=2, column=0, pady=link_pady)
+        readmeLink = tk.Label(helpLinks, text="Github Issue Page", fg="blue", cursor="hand2")
+        readmeLink.grid(row=2, column=1, padx=link_padx, pady=link_pady)
+        readmeLink.bind("<Button-1>", lambda e: self.callback("https://github.com/yanyiju/bilingual-danmaku-synthesizer/issues"))
+
+        Label(helpWindow, text="MIT License © Copyright 2021 Yijun Yan").pack(pady=link_pady)
 
 
     def reset_vars(self):
@@ -337,6 +368,10 @@ class ConfigGUI():
         final_configs[OUTPUT][VIDEO_NAME] = self.root.getvar(name=VIDEO_NAME)
 
         return final_configs
+
+    def callback(self, url):
+        """Used to open hyperlinks."""
+        webbrowser.open_new(url)
 
 
 configGUI = ConfigGUI(configs)
