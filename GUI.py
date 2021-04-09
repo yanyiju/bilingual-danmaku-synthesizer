@@ -31,6 +31,7 @@ class ConfigGUI():
 
         # Constants of font/size/dimension
         self.helv_bold = tkFont.Font(family='Helvetica', weight='bold')
+        self.frame_padx = 10
         self.lab_w = 15 # width of label
         self.btn_w = 15 # width of button component
         self.ent_w = 35 # width of entry component
@@ -101,7 +102,7 @@ class ConfigGUI():
         # Help and Reset button
         Button(self.root, text="Help", command=self.help_support)\
             .pack(side=LEFT, fill=BOTH, padx=self.btn_padx, pady=self.btm_pady)
-        Button(self.root, text="Reset", command=self.reset_vars)\
+        Button(self.root, text="Reset All Configs", command=self.reset_vars)\
             .pack(side=LEFT, fill=BOTH, padx=self.btn_padx, pady=self.btm_pady)
 
         # Start button
@@ -115,7 +116,7 @@ class ConfigGUI():
         helpWindow.title("Help and Support")
         helpWindow.configure(bg=GUI_THEME_COLOR)
         helpLinks = Frame(helpWindow)
-        helpLinks.pack(padx=10)
+        helpLinks.pack(padx=self.frame_padx)
 
         # padding of the hyperlinks
         link_padx = 15
@@ -176,7 +177,7 @@ class ConfigGUI():
         """Build the UI frame for the input configs."""
         # Input property::video_path
         Label(self.input_configs, text="Video Path: ", width=self.lab_w)\
-            .grid(row=0, column=0, pady=self.top_pady)
+            .grid(row=0, column=0, padx=self.frame_padx, pady=self.top_pady)
         Entry(self.input_configs, textvariable=self.video_path, width=self.ent_w)\
             .grid(row=0, column=1, pady=self.top_pady)
         Button(self.input_configs, text="Choose video", width=self.btn_w, command=self.getSelFilenameFunc(self.video_path))\
@@ -184,7 +185,7 @@ class ConfigGUI():
 
         # Input property::audio_path
         Label(self.input_configs, text="Audio Path: ", width=self.lab_w)\
-            .grid(row=1, column=0)
+            .grid(row=1, column=0, padx=self.frame_padx)
         Entry(self.input_configs, textvariable=self.audio_path, width=self.ent_w)\
             .grid(row=1, column=1)
         Button(self.input_configs, text="Choose audio", width=self.btn_w, command=self.getSelFilenameFunc(self.audio_path))\
@@ -192,7 +193,7 @@ class ConfigGUI():
 
         # Input property::file_path
         Label(self.input_configs, text="TXT File Path: ", width=self.lab_w)\
-            .grid(row=2, column=0)
+            .grid(row=2, column=0, padx=self.frame_padx)
         Entry(self.input_configs, textvariable=self.file_path, width=self.ent_w)\
             .grid(row=2, column=1)
         Button(self.input_configs, text="Choose file directory", width=self.btn_w, command=self.getSelPathFunc(self.file_path))\
@@ -203,7 +204,7 @@ class ConfigGUI():
         """Build the UI frame for the danmaku configs."""
         # Danmaku property::fonts::cn
         Label(self.danmaku_configs, text="Chinese Font: ", width=self.lab_w)\
-            .grid(row=0, column=0, pady=self.top_pady)
+            .grid(row=0, column=0, padx=self.frame_padx, pady=self.top_pady)
         Entry(self.danmaku_configs, textvariable=self.CN_font_path, width=self.ent_w)\
             .grid(row=0, column=1, pady=self.top_pady)
         Button(self.danmaku_configs, text="Choose Font File", width=self.btn_w, command=self.getSelFilenameFunc(self.CN_font_path))\
@@ -211,7 +212,7 @@ class ConfigGUI():
 
         # Danmaku property::fonts::jp
         Label(self.danmaku_configs, text="Japanese Font: ", width=self.lab_w)\
-            .grid(row=1, column=0)
+            .grid(row=1, column=0, padx=self.frame_padx)
         Entry(self.danmaku_configs, textvariable=self.JP_font_path, width=self.ent_w)\
             .grid(row=1, column=1)
         Button(self.danmaku_configs, text="Choose Font File", width=self.btn_w, command=self.getSelFilenameFunc(self.JP_font_path))\
@@ -219,34 +220,34 @@ class ConfigGUI():
 
         # Danmaku property::fonts::eng
         Label(self.danmaku_configs, text="English Font: ", width=self.lab_w)\
-            .grid(row=2, column=0)
+            .grid(row=2, column=0, padx=self.frame_padx)
         Entry(self.danmaku_configs, textvariable=self.EN_font_path, width=self.ent_w)\
             .grid(row=2, column=1)
         Button(self.danmaku_configs, text="Choose Font File", width=self.btn_w, command=self.getSelFilenameFunc(self.EN_font_path))\
             .grid(row=2, column=2)
 
         # Danmaku property::fontsize
-        Label(self.danmaku_configs, text="Fontsize: ", width=self.lab_w).grid(row=3, column=0)
+        Label(self.danmaku_configs, text="Fontsize: ", width=self.lab_w).grid(row=3, column=0, padx=self.frame_padx)
         Entry(self.danmaku_configs, textvariable=self.fontsize, width=self.ent_w).grid(row=3, column=1)
 
         # Danmaku property::comment_color
-        Label(self.danmaku_configs, text="Comment color: ", width=self.lab_w).grid(row=4, column=0)
+        Label(self.danmaku_configs, text="Comment color: ", width=self.lab_w).grid(row=4, column=0, padx=self.frame_padx)
         Entry(self.danmaku_configs, textvariable=self.comment_color, width=self.ent_w).grid(row=4, column=1)
 
         # Danmaku property::translation_color
-        Label(self.danmaku_configs, text="Translation color: ", width=self.lab_w).grid(row=5, column=0)
+        Label(self.danmaku_configs, text="Translation color: ", width=self.lab_w).grid(row=5, column=0, padx=self.frame_padx)
         Entry(self.danmaku_configs, textvariable=self.translation_color, width=self.ent_w).grid(row=5, column=1)
 
         # Danmaku property::duration
-        Label(self.danmaku_configs, text="Duration: ", width=self.lab_w).grid(row=6, column=0)
+        Label(self.danmaku_configs, text="Duration: ", width=self.lab_w).grid(row=6, column=0, padx=self.frame_padx)
         Entry(self.danmaku_configs, textvariable=self.duration, width=self.ent_w).grid(row=6, column=1)
 
         # Danmaku property::fps
-        Label(self.danmaku_configs, text="FPS: ", width=self.lab_w).grid(row=7, column=0)
+        Label(self.danmaku_configs, text="FPS: ", width=self.lab_w).grid(row=7, column=0, padx=self.frame_padx)
         Entry(self.danmaku_configs, textvariable=self.fps, width=self.ent_w).grid(row=7, column=1)
 
         # Danmaku property::background_rgb
-        Label(self.danmaku_configs, text="Background RGB: ", width=self.lab_w).grid(row=8, column=0)
+        Label(self.danmaku_configs, text="Background RGB: ", width=self.lab_w).grid(row=8, column=0, padx=self.frame_padx)
         rgb_entry = Frame(self.danmaku_configs)
         Label(rgb_entry, text="R").pack(side=LEFT)
         Entry(rgb_entry, textvariable=self.bkgd_r, width=5).pack(side=LEFT)
@@ -257,15 +258,15 @@ class ConfigGUI():
         rgb_entry.grid(row=8, column=1)
 
         # Danmaku property::background_opacity
-        Label(self.danmaku_configs, text="Background Opacity: ", width=self.lab_w).grid(row=9, column=0)
+        Label(self.danmaku_configs, text="Background Opacity: ", width=self.lab_w).grid(row=9, column=0, padx=self.frame_padx)
         Entry(self.danmaku_configs, textvariable=self.background_opacity, width=self.ent_w).grid(row=9, column=1)
 
         # Danmaku property::coverage
-        Label(self.danmaku_configs, text="Coverage: ", width=self.lab_w).grid(row=10, column=0)
+        Label(self.danmaku_configs, text="Coverage: ", width=self.lab_w).grid(row=10, column=0, padx=self.frame_padx)
         Entry(self.danmaku_configs, textvariable=self.coverage, width=self.ent_w).grid(row=10, column=1)
 
         # Danmaku property::background_opacity
-        Label(self.danmaku_configs, text="Time Range: ", width=self.lab_w).grid(row=11, column=0)
+        Label(self.danmaku_configs, text="Time Range: ", width=self.lab_w).grid(row=11, column=0, padx=self.frame_padx)
         range_entry = Frame(self.danmaku_configs)
         Label(range_entry, text="from").pack(side=LEFT)
         Entry(range_entry, textvariable=self.time_range_beg, width=5).pack(side=LEFT)
@@ -277,9 +278,21 @@ class ConfigGUI():
     def build_output_config_ui(self):
         """Build the UI frame for the output configs."""
         # Output property::codec
-        Label(self.output_configs, text="Codec: ", width=self.lab_w).grid(row=0, column=0, pady=self.top_pady)
+        Label(self.output_configs, text="Codec: ", width=self.lab_w).grid(row=0, column=0, padx=self.frame_padx, pady=self.top_pady)
         Entry(self.output_configs, textvariable=self.codec, width=self.ent_w).grid(row=0, column=1, pady=self.top_pady)
 
+        # Output property::bitrate
+        Label(self.output_configs, text="Bitrate: ", width=self.lab_w).grid(row=1, column=0, padx=self.frame_padx)
+        Entry(self.output_configs, textvariable=self.bitrate, width=self.ent_w).grid(row=1, column=1)
+
+        # Output property::threads
+        Label(self.output_configs, text="Threads: ", width=self.lab_w).grid(row=2, column=0, padx=self.frame_padx)
+        Entry(self.output_configs, textvariable=self.threads, width=self.ent_w).grid(row=2, column=1)
+
+        # Output property::video_name
+        Label(self.output_configs, text="Video Name: ", width=self.lab_w).grid(row=3, column=0, padx=self.frame_padx)
+        Entry(self.output_configs, textvariable=self.video_name, width=self.ent_w).grid(row=3, column=1)
+        
 
     def start_synthesization(self):
         """Function combined with the main action button."""
@@ -319,7 +332,8 @@ class ConfigGUI():
         """Return path selection function."""
         def selectPath():
             path_ = askdirectory()
-            path.set(path_)
+            if path_ != "":
+                path.set(path_)
         return selectPath
 
 
@@ -327,7 +341,8 @@ class ConfigGUI():
         """Return file selection function."""
         def selectFilename():
             filename_ = askopenfilename()
-            filename.set(filename_)
+            if filename_ != "":
+                filename.set(filename_)
         return selectFilename
 
 
