@@ -80,7 +80,11 @@ BDST
 因目前评论语言仅支持英语与日语，所以用户至多有四个文件。请将所有文件置于```InputFiles/```文件夹或某一特定文件夹内。
 
 ### 设定配置文件
-用户可以在[```config_override.py```](config_override.py)中添加参数自定义值来覆盖存放于[```config_default.py```](config_default.py)中的默认参数配置。配置文件中包含三大部分，分别为输入、弹幕和输出。
+~~用户可以在[```config_override.py```](config_override.py)中添加参数自定义值来覆盖存放于[```config_default.py```](config_default.py)中的默认参数配置。配置文件中包含三大部分，分别为输入、弹幕和输出。~~
+
+2021年4月10日更新：用户不用再直接修改配置文件，为配置文件设计的GUI已经添加。GUI文件依赖于python标准包内部的Tkinter包，因而兼容性较好。用户可以在终端进入工具路径后，运行```python3 GUI.py```，在图形界面中设置配置参数，之后直接点击**Start Synthesization**，即可跳过后续步骤导出视频。
+
+![GUI界面截图](./Demo/GUI_screenshot.png)<br>
 
 #### 关于输入
 该部分参数位于关键字***input***下，主要关于目标视频路径以及TXT输入文件路径。
@@ -128,7 +132,7 @@ MoviePy的导出效率完全取决于FFmpeg的导出效率，而不巧的是Movi
 
 如果因为您弹幕过多或其他原因导致长达数小时的渲染时间，目前则只能建议您通过降低分辨率和帧率来降低导出时间。如果您的硬件支持FFmpeg（[详情](https://trac.ffmpeg.org/wiki/HWAccelIntro)），并鉴于MoviePy仍在开发中，本工具暂时提供一种使用FFmpeg的迂回方法。
 
-请修改位于```app.py```最后一部分的导出代码成如下：
+请修改位于```synthesization.py```内```synthesize```函数的最后一部分的导出代码成如下：
 ```
 # Method 1: Write out the final video with moviepy (recommended)
 # video = danmakuSystem.get_video_with_danmaku(danmaku)
